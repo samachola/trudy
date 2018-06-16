@@ -31,4 +31,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 		];
 		
 		public $timestamps = false;
+
+		public static $newAccountRules = [
+			'name' => 'required|string',
+			'email' => 'required|email|unique:users',
+			'phone' => 'unique:users'
+		];
+
+		public static $loginRules = [
+			'email' => 'required',
+			'password' => 'required'
+		];
 }

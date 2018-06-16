@@ -4,14 +4,53 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Exception;
+use Firebase\JWT\JWT;
+use Firebase\JWT\ExpiredException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-	public function __construct()
+
+	/**
+	 * The request instance.
+	 *
+	 * @var \Illuminate\Http\Request
+	 */
+	private $request;
+
+
+	/**
+	 * New controller instance
+	 * 
+	 * @param Request $request
+	 * @return void
+	 */
+	public function __construct(Request $request)
 	{
-		
+		$this->request = $request;
 	}
+
+	/**
+	 * Create a token
+	 * 
+	 * @param User $user
+	 * 
+	 * @return string - Token
+	 */
+	protected function jwt(User $user)
+	{
+		$payload = [
+			'iss' => 'lumen-jwt',
+			'sub' => $user->id,
+			'iat' => time(),
+			'exp' => time() + 60*60
+		];
+
+		return JWT::encode($payload, env('JWT_SECRET'));
+	}
+
 
 	/**
 	 * Create a new user.
@@ -22,13 +61,49 @@ class AuthController extends Controller
 	 */
 	public function register(Request $request)
 	{
-		try {
-			$newUser = User::create($request->all());
-			return response()->json($newUser, 201);
-
-		} catch (Exception $e) {
-			return response('Something went wrong', 500);
-		}
+		// validate $request data
+		$this->validate($request, User::$newAccountRules);
 		
+		$newUser = User::create([
+			'name' => $request->name,
+			'phone' => $request->phone,
+			'email' => $request->email,
+			'password' => Hash::make($request->password),
+		]);
+
+		return response()->json($newUser, 201);	
+	}
+
+	/**
+	 * User Login
+	 * 
+	 * @param User $user
+	 * 
+	 * @return {Object} - contains JWT token
+	 */
+	public function login(User $user)
+	{
+		$this->validate($this->request, User::$loginRules);
+
+		// find user by email
+		$user = User::where('email', $this->request->email)->first();
+		
+		if (!$user) {
+			return response()->json([
+				'error' => 'email does not exist',
+			], 400);
+		}
+
+		// check if passwords match
+		if (Hash::check($this->request->password, $user->password)) {
+			return response()->json([
+				'token' => $this->jwt($user),
+			], 201);
+		}
+
+		// bad request
+		return response()->json([
+			'error' => 'email or password could be wrong'
+		], 400);
 	}
 }

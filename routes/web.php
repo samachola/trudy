@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,19 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => 'auth'], function () use ($router) {
-	$router->post('register', ['uses' => 'AuthController@register']);
-	$router->post('login', ['uses' => 'AuthController@login']);
+$router->group(['prefix' => 'api'], function () use ($router) {
+	$router->group(['prefix' => 'auth'], function () use ($router) {
+		$router->post('register', ['uses' => 'AuthController@register']);
+		$router->post('login', ['uses' => 'AuthController@login']);
+	});
+
+
+	// categories routes
+	$router->group(['prefix' => 'categories'], function () use ($router) {
+		$router->post('', ['uses' => 'CategoriesController@createCategory']);
+		$router->get('', ['uses' => 'CategoriesController@getAllCategories']);
+		$router->put('/{id}', ['uses' => 'CategoriesController@updateCategory']);
+		$router->delete('/{id}', ['uses' => 'CategoriesController@deleteCategory']);
+	});
+
 });

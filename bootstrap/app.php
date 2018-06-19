@@ -71,6 +71,14 @@ $app->routeMiddleware([
 	'jwt.auth' => App\Http\Middleware\JWTMiddleware::class
 ]);
 
+$app->configure('cors');
+$app->register(Barryvdh\Cors\ServiceProvider::class);
+
+$app->middleware([
+	// ...
+	\Barryvdh\Cors\HandleCors::class,
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -102,5 +110,7 @@ $app->router->group([
 ], function ($router) {
     require __DIR__.'/../routes/web.php';
 });
+
+
 
 return $app;

@@ -1,10 +1,17 @@
 <?php
-
+/**
+ * @author Achola Sam <sam.achola@live.com>
+ */
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class User extends Migration
+/**
+ * Category model class
+ * 
+ * @category Models
+ */
+class Categories extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +20,11 @@ class User extends Migration
      */
     public function up()
     {
-        // Users table
         Schema::create(
-            'users', function (Blueprint $table) {
+            'categories', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name');
-                $table->string('email')->unique();
-                $table->string('idcard')->nullable(true);
-                $table->string('phone')->unique();
-                $table->string('password');
+                $table->text('description');
                 $table->timestamps();
             }
         );
@@ -34,6 +37,6 @@ class User extends Migration
      */
     public function down()
     {
-        Schema::drop('users');
+        Schema::dropIfExists('categories');
     }
 }

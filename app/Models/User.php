@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
@@ -18,7 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'password'
+        'name', 'email', 'idcard', 'phone', 'password'
     ];
 
     /**
@@ -27,19 +27,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password',
-		];
-		
-		public $timestamps = false;
+        'password'
+    ];
+    
+    public $timestamps = false;
 
-		public static $newAccountRules = [
-			'name' => 'required|string',
-			'email' => 'required|email|unique:users',
-			'phone' => 'unique:users'
-		];
+    public static $newAccountRules = [
+        'name' => 'required|string',
+        'email' => 'required|email|unique:users',
+        'phone' => 'unique:users',
+    ];
 
-		public static $loginRules = [
-			'email' => 'required',
-			'password' => 'required'
-		];
+    public static $loginRules = [
+        'email' => 'required',
+        'password' => 'required'
+    ];
 }

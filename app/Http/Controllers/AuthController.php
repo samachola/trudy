@@ -75,7 +75,7 @@ class AuthController extends Controller
             ]
         );
 
-        return response()->json($newUser, 201);	
+        return response()->json($newUser, 201);
     }
 
     /**

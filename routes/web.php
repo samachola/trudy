@@ -16,9 +16,15 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
+	// authentication routes
 	$router->group(['prefix' => 'auth'], function () use ($router) {
 		$router->post('register', ['uses' => 'AuthController@register']);
 		$router->post('login', ['uses' => 'AuthController@login']);
+	});
+
+	// user management routes
+	$router->group(['prefix' => 'users'], function () use ($router) {
+		$router->get('', ['uses' =>  'UserController@getAllUsers']);
 	});
 
 

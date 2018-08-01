@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ad0f22319eb5e240aa4f82cfc094323",
+    "content-hash": "404210dc8e293058d4f491623430bb74",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1599,6 +1599,49 @@
                 "time"
             ],
             "time": "2018-05-29T15:23:46+00:00"
+        },
+        {
+            "name": "niellles/lumen-commands",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Niellles/lumen-commands.git",
+                "reference": "fa195a424d71092a155da767e3a17ab180b11d15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Niellles/lumen-commands/zipball/fa195a424d71092a155da767e3a17ab180b11d15",
+                "reference": "fa195a424d71092a155da767e3a17ab180b11d15",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/lumen-framework": "5.*.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Niellles\\LumenCommands\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Niels van der Galiën"
+                }
+            ],
+            "description": "Adds artisan commands to Lumen 5 that aren't available by default.",
+            "keywords": [
+                "artisan",
+                "commands",
+                "lumen",
+                "lumen 5",
+                "make",
+                "model"
+            ],
+            "time": "2018-06-28T21:39:19+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -4023,7 +4066,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "niellles/lumen-commands": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

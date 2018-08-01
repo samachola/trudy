@@ -36,4 +36,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 		$router->delete('/{id}', ['uses' => 'CategoriesController@deleteCategory']);
 	});
 
+	// partners routes
+	$router->group(['prefix' => 'partners'], function () use ($router) {
+		$router->post('', ['uses' => 'PartnersController@create']);
+		$router->get('', ['uses' => 'PartnersController@index']);
+	});
+
 });

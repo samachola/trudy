@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 /**
  * Categories controllers class to handle all

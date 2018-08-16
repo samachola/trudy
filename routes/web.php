@@ -24,7 +24,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 	// user management routes
 	$router->group(['prefix' => 'users'], function () use ($router) {
-		$router->get('', ['uses' =>  'UserController@getAllUsers']);
+		$router->get('', ['middleware' => 'jwt.auth', 'uses' =>  'UserController@getAllUsers']);
 	});
 
 

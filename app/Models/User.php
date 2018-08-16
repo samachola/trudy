@@ -42,4 +42,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email' => 'required',
         'password' => 'required'
     ];
+
+    /**
+     * User Skills
+     * 
+     * @return { UserSkills } - Skills belonging to a user.
+     */
+    public function userSkills()
+    {
+        return hasOne('App\Models\UserSkills');
+    }
 }

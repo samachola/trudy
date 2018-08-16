@@ -10,10 +10,11 @@ class Requests extends Model
 {
 
     protected $fillable = [
-        'date', 'category_id', 'client_id', 'partner_id'
+        'date', 'category_id', 'client_email', 'partner_id', 'status'
     ];
 
     public static $rules = [
-        'date' => 'required',
+      'date' => 'required',
+      'client_email' => 'required|email'
     ];
 }

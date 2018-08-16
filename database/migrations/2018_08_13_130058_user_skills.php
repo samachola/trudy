@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Requests extends Migration
+class UserSkills extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class Requests extends Migration
      */
     public function up()
     {
-        Schema::create(
-            'requests', function (Blueprint $table) {
+        Schema::create( 
+            'user_skills', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('category_id');
-                $table->string('date');
-                $table->string('client_email');
-                $table->integer('partner_id');
-                $table->integer('status');
-                $table->timestamps();
+                $table->integer('user_id');
+                $table->string('skills');
             }
         );
     }
@@ -33,6 +29,6 @@ class Requests extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('user_skills');
     }
 }

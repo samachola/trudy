@@ -13,14 +13,15 @@ class Partners extends Migration
      */
     public function up()
     {
-			Schema::create(
-				'partners', function (Blueprint $table) {
-					$table->increments('id');
-					$table->string('image');
-					$table->integer('category_id');
-					$table->integer('user_id');
-				}
-			);
+        Schema::create(
+            'partners', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('image');
+                $table->integer('category_id');
+                $table->string('location');
+                $table->integer('user_id');
+            }
+        );
     }
 
     /**
@@ -30,6 +31,6 @@ class Partners extends Migration
      */
     public function down()
     {
-       Schema::drop('partners');
+        Schema::drop('partners');
     }
 }

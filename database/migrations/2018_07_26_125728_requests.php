@@ -20,7 +20,10 @@ class Requests extends Migration
                 $table->string('date');
                 $table->string('client_email');
                 $table->integer('partner_id');
-                $table->integer('status');
+								$table->integer('status');
+								$table->integer('fee')->default(0);
+								$table->integer('rating')->default(0);
+								$table->integer('paid')->default(0);
                 $table->timestamps();
             }
         );

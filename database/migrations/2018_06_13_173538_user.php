@@ -21,6 +21,8 @@ class User extends Migration
                 $table->string('email')->unique();
                 $table->string('idcard')->nullable(true);
                 $table->string('phone')->unique();
+								$table->string('image')->nullable(true);
+								$table->integer('role')->default(1);
                 $table->string('password');
                 $table->timestamps();
             }

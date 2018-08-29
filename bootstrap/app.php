@@ -67,17 +67,20 @@ $app->singleton(
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
 
-$app->routeMiddleware([
-	'jwt.auth' => App\Http\Middleware\JWTMiddleware::class
-]);
+$app->routeMiddleware(
+    [
+    'jwt.auth' => App\Http\Middleware\JWTMiddleware::class
+    ]
+);
 
 $app->configure('cors');
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 
-$app->middleware([
-	// ...
-	\Barryvdh\Cors\HandleCors::class,
-]);
+$app->middleware(
+    [
+    \Barryvdh\Cors\HandleCors::class,
+    ]
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -106,15 +109,18 @@ $app->middleware([
 */
 
 if (env('APP_ENV') === 'local') {
-	$app->bind(Illuminate\Database\ConnectionResolverInterface::class, Illuminate\Database\ConnectionResolver::class);
-	$app->register(Niellles\LumenCommands\LumenCommandsServiceProvider::class);
+    $app->bind(Illuminate\Database\ConnectionResolverInterface::class, Illuminate\Database\ConnectionResolver::class);
+    $app->register(Niellles\LumenCommands\LumenCommandsServiceProvider::class);
 }
 
-$app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
-    require __DIR__.'/../routes/web.php';
-});
+$app->router->group(
+    [
+      'namespace' => 'App\Http\Controllers',
+    ], 
+    function ($router) {
+      require __DIR__.'/../routes/web.php';
+    }
+);
 
 
 

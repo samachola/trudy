@@ -12,12 +12,12 @@ class JWTMiddleware
 {
     public function handle($request, Closure $next, $guard = null)
     {
-        $token = $request->get('token');
-
+        $headerValues = $request->headers->all();
+        $token = $headerValues['token'][0];
         if (!$token) {
             return response()->json(
                 [
-                    'error' => 'No token provided'
+                    'error' => 'No token'
                 ], 400
             );
         }
@@ -44,6 +44,8 @@ class JWTMiddleware
 
         $request->auth = $user;
         return $next($request);
+            
+        
     }
 
 }

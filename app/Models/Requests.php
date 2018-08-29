@@ -10,7 +10,14 @@ class Requests extends Model
 {
 
     protected $fillable = [
-        'date', 'category_id', 'client_email', 'partner_id', 'status'
+				'date', 
+				'category_id', 
+				'client_email', 
+				'partner_id', 
+				'status', 
+				'fee', 
+				'rating', 
+				'paid'
     ];
 
     public static $rules = [

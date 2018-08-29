@@ -16,10 +16,11 @@ class Partners extends Migration
         Schema::create(
             'partners', function (Blueprint $table) {
                 $table->increments('id');
-                $table->string('image');
                 $table->integer('category_id');
                 $table->string('location');
-                $table->integer('user_id');
+								$table->integer('user_id');
+								$table->float('lat');
+								$table->float('lng');
             }
         );
     }

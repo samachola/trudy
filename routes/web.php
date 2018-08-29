@@ -25,6 +25,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	// user management routes
 	$router->group(['prefix' => 'users'], function () use ($router) {
 		$router->get('', ['middleware' => 'jwt.auth', 'uses' =>  'UserController@getAllUsers']);
+		$router->get('/{id}', ['uses' => 'UserController@getSingleUser']);
+	
 	});
 
 
@@ -38,8 +40,18 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 	// partners routes
 	$router->group(['prefix' => 'partners'], function () use ($router) {
-		$router->post('', ['uses' => 'PartnersController@create']);
+		$router->post('', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@create']);
 		$router->get('', ['uses' => 'PartnersController@index']);
+		$router->put('/{id}', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@update']);
+		$router->delete('/{id}', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@destroy']);
+	});
+
+	// request routes
+	$router->group(['prefix' => 'requests', 'middleware' => 'jwt.auth'], function () use ($router) {
+		$router->post('', ['uses' => 'RequestController@createRequest']);
+		$router->get('', ['uses' => 'RequestContoller@getRequests']);
+		$router->delete('/{$id}', ['uses' => 'RequestController@removeRequest']);
+		$router->patch('/{$id}', ['uses' => 'RequestController@updateRequestStatus']);
 	});
 
 });

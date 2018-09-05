@@ -10,17 +10,16 @@ use App\Models\Categories;
 class Partners extends Model
 {
     protected $fillable = [
-      'user_id', 'category_id', 'location', 'lat', 'lng'
+      'user_id', 'category', 'location', 'lat', 'lng'
     ];
 
-    protected $nullable = ['lat', 'lng'];
     public $timestamps = false;
 
     public static $rules = [
       'user_id' => 'required|integer',
-      'category_id' => 'required|integer',
+      'category' => 'required|integer',
       'location' => 'required',
-    ];
+		];
 
     /**
      * Get partner details
@@ -31,29 +30,16 @@ class Partners extends Model
     public function getPartnerDetails($partner)
     {
         $userDetails = User::find($partner->user_id);
-        $categoryDetails = Categories::find($partner->category_id);
+				$categoryDetails = Categories::find($partner->category);
 
-        $partnerDetail = (object) [
+				$partnerDetails = (object) [
 					"email" => $userDetails->email,
 					"image" => $userDetails->image,
-          "category" => $categoryDetails->name,
-          "name" => $userDetails->name,
-        ];
+					"category" => $categoryDetails->name,
+					"name" => $userDetails->name,
+				];
 
-        return $partnerDetail;
-    }
-
-    /**
-     * Get filtered partners
-     * 
-     * @param Array $params - filter params
-     * 
-     * @return Array - List of Partners
-     */
-    function getPartners($params)
-    {
-        return Partners::where('location', $params->location)
-                      ->where('category_id', $params->category);
+        return $partnerDetails;
     }
 
     /**

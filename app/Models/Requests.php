@@ -22,6 +22,6 @@ class Requests extends Model
 
     public static $rules = [
       'date' => 'required',
-      'client_email' => 'required|email'
+      'category_id' => 'required|integer'
     ];
 }

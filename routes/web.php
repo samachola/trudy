@@ -32,16 +32,17 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 	// categories routes
 	$router->group(['prefix' => 'categories'], function () use ($router) {
-		$router->post('', ['uses' => 'CategoriesController@createCategory']);
+		$router->post('', ['middleware' => 'jwt.auth', 'uses' => 'CategoriesController@createCategory']);
 		$router->get('', ['uses' => 'CategoriesController@getAllCategories']);
-		$router->put('/{id}', ['uses' => 'CategoriesController@updateCategory']);
-		$router->delete('/{id}', ['uses' => 'CategoriesController@deleteCategory']);
+		$router->put('/{id}', ['middleware' => 'jwt.auth', 'uses' => 'CategoriesController@updateCategory']);
+		$router->delete('/{id}', ['middleware' => 'jwt.auth', 'uses' => 'CategoriesController@deleteCategory']);
 	});
 
 	// partners routes
 	$router->group(['prefix' => 'partners'], function () use ($router) {
 		$router->post('', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@create']);
 		$router->get('', ['uses' => 'PartnersController@index']);
+		$router->post('/filter', ['uses' => 'PartnersController@getPartners']);
 		$router->put('/{id}', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@update']);
 		$router->delete('/{id}', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@destroy']);
 	});
@@ -49,9 +50,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	// request routes
 	$router->group(['prefix' => 'requests', 'middleware' => 'jwt.auth'], function () use ($router) {
 		$router->post('', ['uses' => 'RequestController@createRequest']);
-		$router->get('', ['uses' => 'RequestContoller@getRequests']);
+		$router->get('', ['uses' => 'RequestController@getRequests']);
+		$router->put('status/{$id}', ['uses' => 'RequestController@updateRequestStatus']);
 		$router->delete('/{$id}', ['uses' => 'RequestController@removeRequest']);
-		$router->patch('/{$id}', ['uses' => 'RequestController@updateRequestStatus']);
+		$router->patch('rating/{$id}', ['uses' => 'RequestController@updateRequestRating']);
 	});
-
 });

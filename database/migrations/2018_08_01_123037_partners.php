@@ -15,12 +15,12 @@ class Partners extends Migration
     {
         Schema::create(
             'partners', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('category_id');
-                $table->string('location');
-								$table->integer('user_id');
-								$table->float('lat');
-								$table->float('lng');
+                  $table->increments('id');
+                  $table->integer('category');
+                  $table->string('location');
+                  $table->integer('user_id');
+                  $table->float('lat')->nullable(true);
+                  $table->float('lng')->nullable(true);
             }
         );
     }

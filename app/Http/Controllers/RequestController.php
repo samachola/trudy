@@ -62,17 +62,17 @@ class RequestController extends Controller
      */
     function updateRequestStatus($id)
     {
-				$requestStatuses = [1, 2, 3];
-				$currentRequest = Requests::findOrFail($id);
-				if (in_array($this->request->status, $requestStatuses)) {
-					$currentRequest->status = $this->request->status;
-					$currentRequest->save();
-				}
+        $requestStatuses = [1, 2, 3];
+        $currentRequest = Requests::findOrFail($id);
+        if (in_array($this->request->status, $requestStatuses)) {
+            $currentRequest->status = $this->request->status;
+            $currentRequest->save();
+        }
         $response = [
           'message' => 'Request status updated successfully'
         ];
 
-        return response()->json($response, 201);
+        return response()->json($currentRequest, 201);
 
     }
 
@@ -100,29 +100,81 @@ class RequestController extends Controller
      * 
      * @return void
      */
-    public function getRequests()
+    public function getAllRequests()
     {
         $requests = Requests::all();
 
         return response()->json($requests, 200);
-		}
-		
+    }
 
-		/**
-		 * Notify partner of the new Request 
-		 * @param integer $id - partner_id
-		 * 
-		 * @return {void}
-		 */
-		 public function notifyPartner($id)
-		 {
-			 // Create a mail function.
-				$user = User::find($id);
-				$payload = [
-					"user" => $user->email
-				];
+    /**
+     * Get single request
+     * 
+     * @param integer $id - Request ID.
+     */
+    public function getRequest($id)
+    {
+        $request = Requests::findOrFail($id);
 
-				new NewRequestNotificationMail($payload);
-		 }
+        return response()->json($request, 200);
+    }
+
+    /**
+     * Update request fees
+     * 
+     * @param integer $id - Request ID.
+     * 
+     */
+    public function updateRequestFees($id)
+    {
+        $request = Requests::findOrFail($id);
+        
+        $request->fee = $this->request->fee;
+        $request->save();
+
+        $response = [
+            "message" => "Job Fee updated successfully",
+        ];
+
+        return response()->json($response, 201);
+    }
+
+    /**
+     * Update Request Rating
+     * 
+     * @param integer $id - Request Id
+     */
+    public function updateRequestRating($id)
+    {
+        $request = Requests::findOrFail($id);
+        $ratings = [1, 2, 3, 4, 5];
+        $rating = $this->request->rating;
+
+        if (in_array($rating, $ratings)) {
+            $request->rating = $rating;
+            $request->save();
+        }
+
+        return response()->json($request, 201);
+    }
+
+
+    /**
+     * Notify partner of the new Request 
+     * 
+     * @param integer $id - partner_id
+     * 
+     * @return {void}
+     */
+    public function notifyPartner($id)
+    {
+        // Create a mail function.
+        $user = User::find($id);
+        $payload = [
+          "user" => $user->email
+        ];
+
+        new NewRequestNotificationMail($payload);
+    }
       
 }

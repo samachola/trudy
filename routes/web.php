@@ -50,9 +50,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	// request routes
 	$router->group(['prefix' => 'requests', 'middleware' => 'jwt.auth'], function () use ($router) {
 		$router->post('', ['uses' => 'RequestController@createRequest']);
-		$router->get('', ['uses' => 'RequestController@getRequests']);
-		$router->put('status/{$id}', ['uses' => 'RequestController@updateRequestStatus']);
-		$router->delete('/{$id}', ['uses' => 'RequestController@removeRequest']);
-		$router->patch('rating/{$id}', ['uses' => 'RequestController@updateRequestRating']);
+		$router->get('', ['uses' => 'RequestController@getAllRequests']);
+		$router->get('/{id}',  ['uses' => 'RequestController@getRequest']);
+		$router->patch('/status/{id}', ['uses' => 'RequestController@updateRequestStatus']);
+		$router->put('/fee/{id}', ['uses' => 'RequestController@updateRequestFees']);
+		$router->delete('/{id}', ['uses' => 'RequestController@removeRequest']);
+		$router->patch('rating/{id}', ['uses' => 'RequestController@updateRequestRating']);
 	});
 });

@@ -127,7 +127,7 @@ class PartnersController extends Controller
 				$category = $this->request->category;
 				
 				$partners = DB::table('partners')
-												->where('lat', '<', $lat + (10 * 0.018))
+												->where('lat', '<', $lat + (20 * 0.018))
 												->where('category', $category)
 												->get();
 				

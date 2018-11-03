@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Http\Request as Request;
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -25,4 +25,5 @@ $app = require __DIR__.'/../bootstrap/app.php';
 |
 */
 
-$app->run();
+$request = Request::capture();
+$app->run($request);

@@ -23,6 +23,9 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
+$app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
+$app->instance('path.storage', app()->basePath() . DIRECTORY_SEPARATOR . 'storage');
+
 $app->withFacades();
 
 $app->withEloquent();
@@ -67,6 +70,21 @@ $app->singleton(
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
 
+$app->routeMiddleware(
+    [
+    'jwt.auth' => App\Http\Middleware\JWTMiddleware::class
+    ]
+);
+
+$app->configure('cors');
+$app->register(Barryvdh\Cors\ServiceProvider::class);
+
+$app->middleware(
+    [
+    \Barryvdh\Cors\HandleCors::class,
+    ]
+);
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -78,7 +96,7 @@ $app->singleton(
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
@@ -93,10 +111,20 @@ $app->singleton(
 |
 */
 
-$app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
-    require __DIR__.'/../routes/web.php';
-});
+if (env('APP_ENV') === 'local') {
+    $app->bind(Illuminate\Database\ConnectionResolverInterface::class, Illuminate\Database\ConnectionResolver::class);
+    $app->register(Niellles\LumenCommands\LumenCommandsServiceProvider::class);
+}
+
+$app->router->group(
+    [
+      'namespace' => 'App\Http\Controllers',
+    ], 
+    function ($router) {
+      require __DIR__.'/../routes/web.php';
+    }
+);
+
+
 
 return $app;

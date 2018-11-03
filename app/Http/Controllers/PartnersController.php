@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 
 class PartnersController extends Controller
 {
-		
     /**
      * Request instance
      * 
@@ -37,7 +36,7 @@ class PartnersController extends Controller
      */
     public function index(Request $request)
     {
-				$partners = Partners::all();
+        $partners = Partners::all();
         $partnerDetails = [];
 
         foreach ($partners as $partner) {
@@ -47,9 +46,9 @@ class PartnersController extends Controller
               "id" => $partner->id,
               "user_id" => $partner->user_id,
               "category" => $partner->category,
-							"location" => $partner->location,
-							"lat" => $partner->lat,
-							"lng" => $partner->lng,
+              "location" => $partner->location,
+              "lat" => $partner->lat,
+              "lng" => $partner->lng,
               "partner_details" => $partnerDetail
             ];
 
@@ -62,13 +61,13 @@ class PartnersController extends Controller
     /**
      * Get single patner
      * 
-     * @param integer $id - partner Id
+     * @param integer $id - user Id
      * 
      * @return object
      */
     public function show($id)
     {
-        $partner = Partner::findOrFail($id);
+        $partner = Partners::where('user_id', $id)->first();
 
         return response()->json($partner, 200);
     }
@@ -89,9 +88,9 @@ class PartnersController extends Controller
             [
               'user_id' => $this->request->user_id,
               'category' => $this->request->category,
-							'location' => $this->request->location,
-							'lat' => $this->request->lat,
-							'lng' => $this->request->lng
+              'location' => $this->request->location,
+              'lat' => $this->request->lat,
+              'lng' => $this->request->lng
             ]
         );
         return response()->json($newPartner, 201);
@@ -107,50 +106,65 @@ class PartnersController extends Controller
      */
     public function update($id, Request $request)
     {
-        //
-		}
-		
+        $partner = Partners::findOrFail($id);
 
-		/** 
-		 * get filtered partners
-		 * 
-		 * @param object $request -Request
-		 * 
-		 * @return array - List of partners that meet the filter.
-		 **/
-		 public function getPartners(Request $request)
-		 {
-				$circle_radius = 3959;
-				$max_distance = 20;
-				$lat = $this->request->lat;
-				$lng = $this->request->lng;
-				$category = $this->request->category;
-				
-				$partners = DB::table('partners')
-												->where('lat', '<', $lat + (20 * 0.018))
-												->where('category', $category)
-												->get();
-				
-				$availablePartners = [];
+        $partner->category = $this->request->category;
+        $partner->location = $this->request->location;
+        $partner->lat = $this->request->lat;
+        $partner->lng = $this->request->lng;
 
-				foreach ($partners as $partner) {
-						$partnerDetails = $this->getPartnerDetails($partner);
+        $partner->save();
+
+        return response()->json(
+            [
+              "message" => "Partner details updated successfully"
+            ],
+            201
+        );
+
+    }
+    
+
+    /** 
+     * get filtered partners
+     * 
+     * @param object $request -Request
+     * 
+     * @return array - List of partners that meet the filter.
+     **/
+    public function getPartners(Request $request)
+    {
+        $circle_radius = 3959;
+        $max_distance = 20;
+        $lat = $this->request->lat;
+        $lng = $this->request->lng;
+        $category = $this->request->category;
+        
+        $partners = DB::table('partners')
+                        ->where('lat', '<', $lat + (20 * 0.018))
+                        ->where('category', $category)
+                        ->get();
+        
+        $availablePartners = [];
+
+        foreach ($partners as $partner) {
+            $partnerDetails = $this->getPartnerDetails($partner);
             
             $partners = [
               "id" => $partner->id,
               "user_id" => $partner->user_id,
               "category" => $partner->category,
-							"location" => $partner->location,
-							"lat" => $partner->lat,
-							"lng" => $partner->lng,
+              "location" => $partner->location,
+              "lat" => $partner->lat,
+              "lng" => $partner->lng,
               "partner_details" => $partnerDetails
             ];
 
             $availablePartners[] = $partners;
-				}
+        }
 
-				return response()->json($availablePartners, 200);
-		 }
+        return response()->json($availablePartners, 200);
+    }
 
     /**
      * Delete partner
@@ -162,26 +176,26 @@ class PartnersController extends Controller
     public function destroy($id)
     {
         //
-		}
-		
-		/**
+    }
+    
+    /**
      * Get partner details
      * 
-     * {@param} $partner - Partner object
+     * @param Object $partner - Partner object
      * 
      */
-		 public function getPartnerDetails($partner)
-		 {
-				 $userDetails = User::find($partner->user_id);
-				 $categoryDetails = Categories::find($partner->category);
- 
-				 $partnerDetails = (object) [
-					 "email" => $userDetails->email,
-					 "image" => $userDetails->image,
-					 "category" => $categoryDetails->name,
-					 "name" => $userDetails->name,
-				 ];
- 
-				 return $partnerDetails;
-		 }
+    public function getPartnerDetails($partner)
+    {
+        $userDetails = User::find($partner->user_id);
+        $categoryDetails = Categories::find($partner->category);
+
+        $partnerDetails = (object) [
+          "email" => $userDetails->email,
+          "image" => $userDetails->image,
+          "category" => $categoryDetails->name,
+          "name" => $userDetails->name,
+        ];
+
+        return $partnerDetails;
+    }
 }

@@ -35,7 +35,7 @@ class RequestController extends Controller
      */
     function createRequest(Request $request)
     {
-				// dd($this->request->client);
+        // dd($this->request->client);
         $this->validate($this->request, Requests::$rules);
 
         $newRequest = Requests::create(
@@ -44,13 +44,16 @@ class RequestController extends Controller
                 'category_id' => $this->request->category_id,
                 'client_email' => $this->request->client_email,
                 'partner_id' => $this->request->partner_id,
+                'fee' => 0,
+                'rating' => 0,
+                'paid' => 0,
                 'status' => 0
             ]
-				);
-				
-				if ($newRequest) {
-					$this->notifyPartner($newRequest->partner_id);
-				}
+        );
+
+        if ($newRequest) {
+            $this->notifyPartner($newRequest->partner_id);
+        }
 
         return response()->json($newRequest, 201);
     }

@@ -24,9 +24,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 	// user management routes
 	$router->group(['prefix' => 'users'], function () use ($router) {
-		$router->get('', ['middleware' => 'jwt.auth', 'uses' =>  'UserController@getAllUsers']);
+		$router->get('', ['uses' =>  'UserController@getAllUsers']);
 		$router->get('/{id}', ['uses' => 'UserController@getSingleUser']);
-	
 	});
 
 
@@ -42,16 +41,18 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->group(['prefix' => 'partners'], function () use ($router) {
 		$router->post('', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@create']);
 		$router->get('', ['uses' => 'PartnersController@index']);
+		$router->get('/{id}', ['uses' => 'PartnersController@show']);
 		$router->post('/filter', ['uses' => 'PartnersController@getPartners']);
-		$router->put('/{id}', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@update']);
+		$router->put('/{id}', ['uses' => 'PartnersController@update']);
 		$router->delete('/{id}', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@destroy']);
 	});
 
 	// request routes
-	$router->group(['prefix' => 'requests', 'middleware' => 'jwt.auth'], function () use ($router) {
+	$router->group(['prefix' => 'requests'], function () use ($router) {
 		$router->post('', ['uses' => 'RequestController@createRequest']);
 		$router->get('', ['uses' => 'RequestController@getAllRequests']);
 		$router->get('/{id}',  ['uses' => 'RequestController@getRequest']);
+		$router->get('/all/{id}', ['uses' => 'RequestController@getAllUserRequests']);
 		$router->patch('/status/{id}', ['uses' => 'RequestController@updateRequestStatus']);
 		$router->put('/fee/{id}', ['uses' => 'RequestController@updateRequestFees']);
 		$router->delete('/{id}', ['uses' => 'RequestController@removeRequest']);

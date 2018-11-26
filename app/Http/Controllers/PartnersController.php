@@ -86,11 +86,11 @@ class PartnersController extends Controller
 
         $newPartner = Partners::create(
             [
-              'user_id' => $this->request->user_id,
-              'category' => $this->request->category,
-              'location' => $this->request->location,
-              'lat' => $this->request->lat,
-              'lng' => $this->request->lng
+                'user_id' => $this->request->user_id,
+                'category' => $this->request->category,
+                'location' => $this->request->location,
+                'lat' => $this->request->lat,
+                'lng' => $this->request->lng
             ]
         );
         return response()->json($newPartner, 201);
@@ -141,7 +141,7 @@ class PartnersController extends Controller
         $category = $this->request->category;
         
         $partners = DB::table('partners')
-                        ->where('lat', '<', $lat + (20 * 0.018))
+                        ->where('lat', '<', $lat + (50 * 0.018))
                         ->where('category', $category)
                         ->get();
         

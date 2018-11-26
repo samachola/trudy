@@ -39,7 +39,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 	// partners routes
 	$router->group(['prefix' => 'partners'], function () use ($router) {
-		$router->post('', ['middleware' => 'jwt.auth', 'uses' => 'PartnersController@create']);
+		$router->post('', ['uses' => 'PartnersController@create']);
 		$router->get('', ['uses' => 'PartnersController@index']);
 		$router->get('/{id}', ['uses' => 'PartnersController@show']);
 		$router->post('/filter', ['uses' => 'PartnersController@getPartners']);
